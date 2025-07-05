@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' type='image/png' href='icon.png'>
+    <title>Simple000PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple PWA App001</h1>
+        <input type="text" id="textInput" placeholder="Enter a value">
+        <button onclick="saveValue()">Save Value</button>
+        <div class="output" id="output"></div>
+    </div>
+    <div id="install-container"></div>
+
+
+    <script>
+
+
+        // Load the saved value from local storage when the page loads
+        window.onload = function() {
+            const savedValue = localStorage.getItem('storedValue');
+            if (savedValue) {
+                document.getElementById('output').textContent = `Stored Value: ${savedValue}`;
+            }
+        };
+
+        // Function to save the value to local storage
+        function saveValue() {
+            const inputValue = document.getElementById('textInput').value;
+            if (inputValue) {
+                localStorage.setItem('storedValue', inputValue);
+                document.getElementById('output').textContent = `Stored Value: ${inputValue}`;
+            } else {
+                alert('Please enter a value.');
+            }
+        }
+
+        // Service Worker registration for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
